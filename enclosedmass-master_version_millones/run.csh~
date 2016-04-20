@@ -1,0 +1,40 @@
+#!/bin/tcsh
+#$ -S
+#$ -cwd
+
+# Script to run enclosedmass
+#
+#
+
+set GadgetDir = './'
+set NSubVol   = 512
+set Central = 'Radio'
+set LBox = '500.0'
+set CellSize = '10.0'
+set LogBins = '0'
+set RMin = '-1.0'
+set RMax = '1.0' 		
+
+# RMin and RMax are only relevant if LogBins = 1
+
+#foreach snap ('25' '29' '17')
+	set snap = $1
+#foreach snap ('17' '20' '25' '29')
+
+	set snapshot  = '0'$snap
+	set GadgetFile = $GadgetDir'AllGal'
+
+	if ($Central == 'SinRadio') then
+		set CentralFile = 'GalSinRadio'
+	else if ($Central == 'Radio') then
+		set CentralFile = 'GalRadio'
+	endif
+
+#	set OutFile = 'qso_dm_'$snap'.'$part
+	set OutFile = $Central'out'
+
+#	set OutFile = 'rg_dm_Uber_mar14_'$snap
+
+	echo $GadgetFile $CentralFile $OutFile $LBox $CellSize  $LogBins $RMin $RMax
+	make 
+	./enclosedmass $GadgetFile $CentralFile $OutFile $LBox $CellSize $LogBins $RMin $RMax

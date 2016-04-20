@@ -1,0 +1,73 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+#include "allvars.h"
+#include "proto.h"
+
+void linkedlist(particle *part, unsigned long iadd[], long hoc[], unsigned long n)
+{
+	long icell[NCellTotal];
+	long i, ic, ioc,index,ncheck, ncheck2;
+
+	printf(" Building the linked list \n");fflush(stdout);
+
+	for(i = 0; i<NCellTotal; i++)
+	{
+		icell[i] = 0;
+		hoc[i] = -1;
+	}
+
+	
+
+/*for(i = 0; i<NCellTotal; i++)
+	printf("El valor de particula[%ld].ioc es %ld\n",i,part[i].ioc);
+
+printf("------------------------------------\n");
+for(i = 0; i<n; i++)
+	printf("El valor de particula[%ld].ioc es %ld\n",i,part[i].ioc);
+
+printf("El valor de n %ld\n",n);*/
+
+printf("icell and hoc initialized ok. No problem there\n");fflush(stdout);
+
+	for(i=0;i<n;i++)
+	{	//printf("\n\n---------------Estoy dentro-------------------\n\n");
+		ioc = part[i].ioc;
+//if(part[i].ioc!=0) printf("\n\nEl valor de part.ioc es:%ld\n\n",part[i].ioc);
+//if(part[i].ioc!=0) printf("\n\nEl valor de i es:%ld\n\n",i);
+		iadd[i] = hoc[ioc];
+		hoc[ioc] = part[i].id;
+//printf("\n\nEl valor de part.id es:%ld\n\n",part[i].id);
+		icell[ioc]++;
+//printf("\n\nEl valor de i es:%ld\n\n",i);
+
+	}
+//printf("\n\n---------------He salido del bucle-------------------\n\n");
+
+	printf("LL generated. No problem there\n");fflush(stdout);
+
+	ncheck = 0;
+	ncheck2 = 0;
+ 
+   for(ic=0;ic<NCellTotal;ic++)
+   {
+		index = hoc[ic];
+        while( index >= 0 )
+        {
+            index = iadd[index];
+            ncheck ++;
+        }
+        ncheck2 += icell[ic];
+   }
+ 
+   printf("checking done. No problem there\n");fflush(stdout);
+
+   if (ncheck != n  || ncheck2 != n )
+   {
+      printf("There was a problem in the linked list\n");
+      printf("%ld != %ld != %ld \n",n, ncheck, ncheck2);
+      exit(1);
+   }
+	printf("Done \n"); fflush(stdout);
+}
